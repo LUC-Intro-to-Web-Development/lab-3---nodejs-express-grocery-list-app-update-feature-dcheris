@@ -1,47 +1,50 @@
-const express = require('express')
+var createError = require('http-errors');
 const dbOperations = require('./database.js');
-const app = express()
-const port = 3000
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+const port = 3000;
 
-/**To serve static files such as images, CSS files, and JavaScript files, create a folders
-* and include the below statement.  The below statement assumes that I have a folder named assets
-**/
-app.use(express.static('assets'))
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+
+var app = express();
 
 // view engine setup
-app.set("view engine", "hbs");
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
-// parse application/json
+app.use(logger('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// For parsing application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
-// Rout to  home
+
+// GET HOME PAGE
 app.get('/', function (req, res) {
-	
 	dbOperations.getAllItems(res);
-
 })
 
-// Route to create a grocery list item
- app.post('/create_item', function (req, res) {
-	//Getting body parameters
-	const { item_name, item_count} =req.body;
 
-	//Execute creatItems method
-	dbOperations.createItem(item_name, item_count, res);
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
-	
- })
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
- // Route that allows me to delete a grocery list item
- app.post('/delete_item', function (req, res) {
-	//Getting body parameters
-	const { deleterecord} = req.body;
-	dbOperations.deleteItem(deleterecord, res);
-	
- })
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
- 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+module.exports = app;
