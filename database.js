@@ -35,7 +35,7 @@ let createItem = (item_name, item_count, res) =>{
         console.log("Grocery Item Created");
         console.log(`Rows inserted ${this.changes}`);
     })
-    // getAllItems(res);
+     getAllItems(res);
     
 
 }
@@ -49,13 +49,10 @@ let getAllItems = (res) => {
          
             throw err;
           }
-          /*rows.forEach((row) => {
-            console.log(row.item_name);
-          });*/
-          console.log(rows);
           res.render('index', {rows})
 
     })
+
 }
 
 // UPDATE A GROCERY LIST ITEM ***** WILL NEED TO CHECK IF THIS FUNCTION WORKS***
