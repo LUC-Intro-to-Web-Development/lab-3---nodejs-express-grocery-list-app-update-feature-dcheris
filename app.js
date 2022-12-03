@@ -1,50 +1,48 @@
-var createError = require('http-errors');
-const dbOperations = require('./database.js');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const port = 3000;
+const express = require('express')
+const app = express()
+const port = 3000
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
+/**To serve static files such as images, CSS files, and JavaScript files, create a folders
+* and include the below statement.  The below statement assumes that I have a folder named assets
+**/
+app.use(express.static('assets'))
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+app.set("view engine", "hbs");
 
-app.use(logger('dev'));
+// parse application/json
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// For parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-
-// GET HOME PAGE
+// ROUTE TO HOME PAGE
 app.get('/', function (req, res) {
-	dbOperations.getAllItems(res);
+	console.log("Sent as a get request");
+
+	res.render('index', { title: "Grocery List Application"})
 })
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// ROUTE TO CREATE GROCERY LIST ITEM
+ app.post('/create_item', function (req, res) {
+	//Getting body parameters
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+	res.render( 'index', {title : "Contact Page"})
+ })
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+ // ROUTE TO DELETE GROCERY ITEM
+ app.post('/delete_item', function (req, res) {
+	//Getting body parameters
 
-module.exports = app;
+	res.render( 'index', {title : "Contact Page"})
+ })
+
+ // ROUTE TO UPDATE GROCERY LIST ITEM
+ app.post('/update_item', function (req, res) {
+	//Getting body parameters
+
+	res.render( 'index', {title : "Contact Page"})
+ })
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))

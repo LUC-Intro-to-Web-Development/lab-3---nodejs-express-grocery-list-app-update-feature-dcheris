@@ -21,9 +21,9 @@ let db = new sqlite3.Database('./grocerydb.db', sqlite3.OPEN_READWRITE, (err) =>
  */
 
 
-//Create a Grocery List Item
+// CREATE A GROCERY LIST ITEM
 let createItem = (item_name, item_count, res) =>{
-    var createGroceryListItem = 'INSERT INTO grocery_item (item_name, item_count) VALUES (?,?)' //Parameterized Query
+    var createGroceryListItem = 'INSERT INTO grocery_item (item_name, item_count) VALUES (?,?)' //  PARAMETERIZED QUERY
     var params = [item_name, item_count];
     
     db.run(createGroceryListItem, params, function(err){
@@ -35,14 +35,13 @@ let createItem = (item_name, item_count, res) =>{
         console.log("Grocery Item Created");
         console.log(`Rows inserted ${this.changes}`);
     })
-    getAllItems(res);
+    // getAllItems(res);
+    
 
 }
 
 
-
-
-//Display all Grocery all grocery List Items
+// DISPLAY ALL GROCERY LIST ITEMS
 let getAllItems = (res) => {
     var getAllGroceryItems = 'SELECT itemID, item_name, item_count FROM grocery_item';
     db.all(getAllGroceryItems, function(err, rows){
@@ -59,8 +58,29 @@ let getAllItems = (res) => {
     })
 }
 
+// UPDATE A GROCERY LIST ITEM ***** WILL NEED TO CHECK IF THIS FUNCTION WORKS***
 
-//Delete a Grocery List Item
+let updateItem = (recordToUpdate, res) =>{
+    var updateGroceryItem = 'UPDATE grocery_item SET item_name = ? WHERE itemID = ?';
+    var params = [recordToUpdate];
+
+	db.run(updateGroceryItem, params, function(err){
+		if (err){
+			return console.log(err.message);
+		}
+    
+
+		console.log("Grocery Item Updated");
+		console.log(`Rows updated ${this.changes}`);	  
+	});
+
+   getAllItems(res);
+
+}
+
+
+
+// DELETE A GROCERY LIST ITEM
 let deleteItem = (recordToDelete, res) =>{
     
     var deleteGroceryItem = 'DELETE FROM grocery_item WHERE itemID = ?';
@@ -77,7 +97,7 @@ let deleteItem = (recordToDelete, res) =>{
 		console.log(`Rows deleted ${this.changes}`);	  
 	});
 
-    getAllItems(res);
+     
 }
 
-module.exports = {deleteItem, createItem, getAllItems}
+module.exports = {deleteItem, createItem, updateItem,getAllItems}

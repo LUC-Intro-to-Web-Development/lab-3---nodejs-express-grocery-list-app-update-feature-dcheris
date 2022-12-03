@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Family Grocery List</title>
+        <title>{{title}}</title>
          <meta charset="UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
@@ -52,6 +52,9 @@
                         <td>{{this.item_name}}</td>
                         <td>{{this.item_count}}</td>
                         <td>
+                            <form action="/update_item" method="POST">
+                                <button name="updaterecord" id="update" type="submit" class="btn btn-success" value="{{this.itemID}}">UPDATE</button>
+                            </form>
                             <form action="/delete_item" method="POST">
                                 <button name="deleterecord" id="deletenow" type="submit" class="btn btn-danger" value="{{this.itemID}}">DELETE</button>
                             </form>
