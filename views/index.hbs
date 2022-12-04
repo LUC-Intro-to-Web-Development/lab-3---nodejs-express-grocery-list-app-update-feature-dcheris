@@ -2,15 +2,21 @@
 <html>
     <head>
         <title>{{title}}</title>
+        
          <meta charset="UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,400&display=swap');
+            
+            body {
+                background-color: #D9BEA7;
+            }
             #container{
                 width: 50%;
                 margin: auto;
             }
             table {
-                font-family: arial, sans-serif;
+                font-family:'Roboto', sans-serif;
                 border-collapse: collapse;
                 width: 100%;
                 }
@@ -18,12 +24,23 @@
                 td, th {
                 border: 1px solid #dddddd;
                 text-align: left;
-                padding: 8px;
+                padding: 10px;
                 }
 
                 tr:nth-child(even) {
                 background-color: #dddddd;
             }
+
+            .button-container {
+                font-family:'Roboto', sans-serif;
+                display:inline-flex;
+                gap:10px;
+            }
+            h1, h2, {
+
+            color: #0D0D0D;
+            }
+
         </style>
     </head>
     <body>
@@ -45,19 +62,21 @@
                     <tr>
                         <th>Grocery Item</th>
                         <th>Quantity</th>
-                        <th>MODIFY</th>
+                        <th>Modify</th>
                     </tr>
                 {{#each rows}}
                     <tr>
                         <td>{{this.item_name}}</td>
                         <td>{{this.item_count}}</td>
                         <td>
+                            <div class="button-container">
                             <form action="/update_item" method="POST">
                                 <button name="updaterecord" id="update" type="submit" class="btn btn-success" value="{{this.itemID}}">UPDATE</button>
                             </form>
                             <form action="/delete_item" method="POST">
                                 <button name="deleterecord" id="deletenow" type="submit" class="btn btn-danger" value="{{this.itemID}}">DELETE</button>
                             </form>
+                            </div>
                         </td>
                         
                     </tr>
