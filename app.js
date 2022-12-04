@@ -1,7 +1,7 @@
 const express = require('express');
 const dbOperations = require('./database.js');
 const app = express();
-const port = 3000;
+const port = 3000
 
 /**To serve static files such as images, CSS files, and JavaScript files, create a folders
 * and include the below statement.  The below statement assumes that I have a folder named assets
@@ -15,7 +15,7 @@ app.set("view engine", "hbs");
 app.use(express.json());
 
 // For parsing application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
 
 // ROUTE TO HOME PAGE
 app.get('/', function (req, res) {
@@ -24,25 +24,38 @@ app.get('/', function (req, res) {
 })
 
 
+// ROUTE TO UPDATE PAGE
+app.get('/update_item', function (req, res) {
+
+  dbOperations.getAllItems(res);
+})
+
 // ROUTE TO CREATE GROCERY LIST ITEM
  app.post('/create_item', function (req, res) {
-	//Getting body parameters
 
-	res.render( 'index', {title : "Contact Page"})
+	// GETTING BODY PARAMETERS
+  const {item_name, item_count}= req.body;
+
+  // EXECUTE createItems METHOD
+  dbOperations.createItem(item_name, item_count, res);
+
  })
 
  // ROUTE TO DELETE GROCERY ITEM
  app.post('/delete_item', function (req, res) {
-	//Getting body parameters
+	// GETTING BODY PARAMETERS
+  const {deleterecord}= req.body;
+  dbOperations.deleteItem(deleterecord);
 
-	res.render( 'index', {title : "Contact Page"})
  })
 
  // ROUTE TO UPDATE GROCERY LIST ITEM
  app.post('/update_item', function (req, res) {
-	//Getting body parameters
 
-	res.render( 'index', {title : "Contact Page"})
+	// GETTING BODY PARAMETERS
+  const {item_name, item_count}= req.body;
+  dbOperations.updateItem(item_name, item_count);
+
  })
-
+ 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

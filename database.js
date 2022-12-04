@@ -31,9 +31,9 @@ let createItem = (item_name, item_count, res) =>{
         if(err){
             return console.log(err.message);
         }
-        
         console.log("Grocery Item Created");
         console.log(`Rows inserted ${this.changes}`);
+    
     })
      getAllItems(res);
     
@@ -49,7 +49,8 @@ let getAllItems = (res) => {
          
             throw err;
           }
-          res.render('index', {rows})
+          console.log(rows);
+		res.render('index', {rows})
 
     })
 
@@ -57,28 +58,26 @@ let getAllItems = (res) => {
 
 // UPDATE A GROCERY LIST ITEM ***** WILL NEED TO CHECK IF THIS FUNCTION WORKS***
 
-let updateItem = (recordToUpdate, res) =>{
+let updateItem = (item_name, item_count, res) =>{
     var updateGroceryItem = 'UPDATE grocery_item SET item_name = ? WHERE itemID = ?';
-    var params = [recordToUpdate];
+    var params = [item_name, item_count];
 
-	db.run(updateGroceryItem, params, function(err){
+	db.run(updateGroceryItem, function(err){
 		if (err){
 			return console.log(err.message);
 		}
     
 
-		console.log("Grocery Item Updated");
-		console.log(`Rows updated ${this.changes}`);	  
+        console.log("Grocery Item Updated");
+        console.log(`Rows updated ${this.changes}`);
 	});
 
    getAllItems(res);
 
 }
 
-
-
 // DELETE A GROCERY LIST ITEM
-let deleteItem = (recordToDelete, res) =>{
+let deleteItem = (recordToDelete,res) =>{
     
     var deleteGroceryItem = 'DELETE FROM grocery_item WHERE itemID = ?';
 	
