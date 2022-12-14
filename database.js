@@ -31,19 +31,31 @@ let createItem = (item_name, item_count, res) =>{
         if(err){
             return console.log(err.message);
         }
-        console.log("Grocery Item Created");
-        console.log(`Rows inserted ${this.changes}`);
-    
+        
+        getAllItems(res);
     })
-     getAllItems(res);
-    
-
 }
 
+//Display a grocery item
+let getAItem = (id, res) => {
+    var getGroceryItem = 'SELECT itemID, item_name, item_count, description FROM grocery_item WHERE itemID = ?';
+    var params = [id];
+    db.get(getGroceryItem, params, function(err, row){
+        if (err) {
+         
+            throw err;
+          }
+          
+          console.log(row);
+          res.render('update', {row});
+
+    })
+    
+}
 
 // DISPLAY ALL GROCERY LIST ITEMS
 let getAllItems = (res) => {
-    var getAllGroceryItems = 'SELECT itemID, item_name, item_count FROM grocery_item';
+    var getAllGroceryItems = 'SELECT itemID, item_name, item_count, description FROM grocery_item';
     db.all(getAllGroceryItems, function(err, rows){
         if (err) {
          
@@ -58,11 +70,12 @@ let getAllItems = (res) => {
 
 // UPDATE A GROCERY LIST ITEM ***** WILL NEED TO CHECK IF THIS FUNCTION WORKS***
 
-let updateItem = (item_name, item_count, res) =>{
-    var updateGroceryItem = 'UPDATE grocery_item SET item_name = ? WHERE itemID = ?';
-    var params = [item_name, item_count];
+var updateItem = (updatedGroceryItem, res) =>{
+    var updateGroceryItem = 'UPDATE grocery_item SET item_name = ?, item_count= ?, description = ?  WHERE itemID = ?';
+    var params = [updatedGroceryItem.item_name,updatedGroceryItem.item_count,updatedGroceryItem.itemID, updatedGroceryItem.description];
 
-	db.run(updateGroceryItem, function(err){
+    db.run(updateGroceryItem,params,function(err){
+
 		if (err){
 			return console.log(err.message);
 		}
@@ -70,14 +83,33 @@ let updateItem = (item_name, item_count, res) =>{
 
         console.log("Grocery Item Updated");
         console.log(`Rows updated ${this.changes}`);
-	});
+      });
 
-   getAllItems(res);
+      getAllItems(res);
 
 }
 
+/*
+var confirm_Update = (updaterecord,res) => {
+    var getConfirmUpdate = 'UPDATE `grocery_item` SET itemID = ? item_name = ? item_count = ?, WHERE itemID = ?';
+
+	// UPDATE SQL STATEMENT HERE. PARAMETERS OF THE NEW VALUES
+    var params = [updaterecord.itemID, updaterecord.item_name,updaterecord.item_count]
+    db.run(getConfirmUpdate,[res.body, res.params],function(err,row){
+
+        if(err){
+            return console.log(err.message);
+        }
+        console.log("Grocery Item Updated");
+		res.render('index', {row});
+        });
+       
+        getAllItems(res);
+}
+*/
+
 // DELETE A GROCERY LIST ITEM
-let deleteItem = (recordToDelete,res) =>{
+var deleteItem = (recordToDelete,res) =>{
     
     var deleteGroceryItem = 'DELETE FROM grocery_item WHERE itemID = ?';
 	
@@ -87,13 +119,11 @@ let deleteItem = (recordToDelete,res) =>{
 		if (err){
 			return console.log(err.message);
 		}
+        console.log("Grocery Item Deleted");
+        console.log('Rows deleted ${this.changes}');
+        });
     
+        getAllItems(res);
+    }
 
-		console.log("Grocery Item Deleted");
-		console.log(`Rows deleted ${this.changes}`);	  
-	});
-
-     
-}
-
-module.exports = {deleteItem, createItem, updateItem,getAllItems}
+module.exports = {deleteItem,createItem, updateItem, getAItem, getAllItems}

@@ -7,6 +7,7 @@ const port = 3000
 * and include the below statement.  The below statement assumes that I have a folder named assets
 **/
 app.use(express.static('assets'))
+app.use(express.static(__dirname + '/public'));
 
 // view engine setup
 app.set("view engine", "hbs");
@@ -17,6 +18,7 @@ app.use(express.json());
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }))
 
+
 // ROUTE TO HOME PAGE
 app.get('/', function (req, res) {
 
@@ -24,11 +26,6 @@ app.get('/', function (req, res) {
 })
 
 
-// ROUTE TO UPDATE PAGE
-app.get('/update_item', function (req, res) {
-
-  dbOperations.getAllItems(res);
-})
 
 // ROUTE TO CREATE GROCERY LIST ITEM
  app.post('/create_item', function (req, res) {
@@ -45,7 +42,7 @@ app.get('/update_item', function (req, res) {
  app.post('/delete_item', function (req, res) {
 	// GETTING BODY PARAMETERS
   const {deleterecord}= req.body;
-  dbOperations.deleteItem(deleterecord);
+  dbOperations.deleteItem(deleterecord,res);
 
  })
 
@@ -53,9 +50,19 @@ app.get('/update_item', function (req, res) {
  app.post('/update_item', function (req, res) {
 
 	// GETTING BODY PARAMETERS
-  const {item_name, item_count}= req.body;
-  dbOperations.updateItem(item_name, item_count);
-
+  const {updaterecord} = req.body;
+  dbOperations.getAItem(updaterecord,res);
  })
+
+ // CREATE A ROUTE FOR CONFIRM UPDATE
+ app.post('/confirm_update', function (req, res){
+  const {itemID,item_name, item_count,description} = req.body;
+  
+  var updatedItem = {itemID,item_name, item_count,description};
+
+  dbOperations.updateItem(updatedItem,res);
+
+   })
+
  
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
