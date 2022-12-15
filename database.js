@@ -22,9 +22,9 @@ let db = new sqlite3.Database('./grocerydb.db', sqlite3.OPEN_READWRITE, (err) =>
 
 
 // CREATE A GROCERY LIST ITEM
-let createItem = (item_name, item_count, res) =>{
-    var createGroceryListItem = 'INSERT INTO grocery_item (item_name, item_count) VALUES (?,?)' //  PARAMETERIZED QUERY
-    var params = [item_name, item_count];
+let createItem = (item_name, item_count,description, res) =>{
+    var createGroceryListItem = 'INSERT INTO grocery_item (item_name, item_count, description) VALUES (?,?,?)' //  PARAMETERIZED QUERY
+    var params = [item_name, item_count, description];
     
     db.run(createGroceryListItem, params, function(err){
 
@@ -72,7 +72,7 @@ let getAllItems = (res) => {
 
 var updateItem = (updatedGroceryItem, res) =>{
     var updateGroceryItem = 'UPDATE grocery_item SET item_name = ?, item_count= ?, description = ?  WHERE itemID = ?';
-    var params = [updatedGroceryItem.item_name,updatedGroceryItem.item_count,updatedGroceryItem.itemID, updatedGroceryItem.description];
+    var params = [updatedGroceryItem.item_name,updatedGroceryItem.item_count, updatedGroceryItem.description,updatedGroceryItem.itemID];
 
     db.run(updateGroceryItem,params,function(err){
 

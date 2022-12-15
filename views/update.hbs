@@ -9,14 +9,18 @@
             
             <!--Form to update grocery data-->
             <h2>Enter Grocery Item:</h2>
-            <form action="/confirm_update" method="POST">
+         <form action="/confirm_update" method="POST">
                 <input type="text"  name="item_name" class="form-control" value="{{row.item_name}}" placeholder="Enter grocery item (ex. Cereal)" size="40"><br>
                 <input type="number"  name="item_count" class="form-control" value="{{row.item_count}}"placeholder="Enter quantity (ex. 2)" size="60"><br>
-                 <input type="number"  name="description" class="form-control" value="{{row.description}}"placeholder="Enter a description" size="60"><br>
+                 <input type="text"  name="description" class="form-control" value="{{row.description}}" placeholder="Enter a description" size="60"><br>
                  <input type="hidden" name="itemID" class="btn btn-primary" value="{{row.itemID}}">
                   <input type="submit" class="btn btn-primary" value="Update">
 
             </form>
+            </div>
+            <script>
+                
+            </script>
             <body>
 
             </body>

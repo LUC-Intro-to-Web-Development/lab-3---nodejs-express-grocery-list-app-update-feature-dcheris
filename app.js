@@ -31,10 +31,10 @@ app.get('/', function (req, res) {
  app.post('/create_item', function (req, res) {
 
 	// GETTING BODY PARAMETERS
-  const {item_name, item_count}= req.body;
+  const {item_name, item_count, description}= req.body;
 
   // EXECUTE createItems METHOD
-  dbOperations.createItem(item_name, item_count, res);
+  dbOperations.createItem(item_name, item_count,description, res);
 
  })
 
@@ -56,9 +56,9 @@ app.get('/', function (req, res) {
 
  // CREATE A ROUTE FOR CONFIRM UPDATE
  app.post('/confirm_update', function (req, res){
-  const {itemID,item_name, item_count,description} = req.body;
+  const {itemID,item_name, item_count, description} = req.body;
   
-  var updatedItem = {itemID,item_name, item_count,description};
+  var updatedItem = {itemID,item_name, item_count, description};
 
   dbOperations.updateItem(updatedItem,res);
 
